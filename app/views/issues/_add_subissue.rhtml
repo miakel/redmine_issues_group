@@ -79,6 +79,9 @@
 <p><label for="new_subject"><%=l(:field_subject)%>:</label>
 <%= text_field_tag "new_subject", @issue.subject, :size => 50 %></p>
 
+<p><label for="new_assigned_to_id"><%=l(:field_subject)%>:</label>
+<%= select_tag "new_assigned_to_id", "<option value=\"\">#{l(:label_no_change_option)}</option>" + options_from_collection_for_select(@issue.assignable_users, "id", "name") %></p>
+
 </div>
 
 <% submit_tag l(:button_add) %>
