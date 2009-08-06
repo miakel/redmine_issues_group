@@ -1,3 +1,9 @@
 # Russian strings go here
 label_main_project: "Главный проект"
 label_group_by: "Группировать по"
+button_parent_edit: "Изменить родителя"
+label_parent_edit_selected_issues: "Изменить родителя"
+field_parent_issue: "Родитель"
+notice_failed_to_update: "Невозможно обновить"
+label_subissues: "Подзадачи"
+label_add_subissue: Добавить подзадачу
