@@ -27,5 +27,6 @@ end
 Dispatcher.to_prepare do
 	IssuesHelper.send(:include, IssuesHelperPatch)
 	Issue.send(:include, IssueRelationPatch)
+	Issue.send(:include, IssueJournalPatch)
 	CollectiveIdea::Acts::NestedSet::InstanceMethods.send(:include, AwesomeNestedSetIssuesPatch)
 end
