@@ -19,8 +19,8 @@
 		$j("#dialog").dialog({
 			bgiframe: true,
 			autoOpen: false,
-			width: 500,
-      height: 270,
+			width: 728,
+			height: 490,
 			modal: true,
 			buttons: {
 				'<%= l(:button_add) %>': function() {
@@ -81,6 +81,9 @@
 
 <p><label for="new_assigned_to_id"><%=l(:field_assigned_to)%>:</label>
 <%= select_tag "new_assigned_to_id", options_from_collection_for_select(@issue.assignable_users, "id", "name", @issue.assigned_to_id) %></p>
+
+<p><label for="new_description"><%=l(:field_description)%>:</label>
+<%= text_area_tag "new_description", @issue.description, :size => '50x6' %></p>
 
 </div>
 

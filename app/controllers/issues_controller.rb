@@ -55,6 +55,7 @@ class IssuesController < ApplicationController
       @issues.each do |issue|
         issue.init_journal(User.current)
         issue.subject = params[:new_subject]
+        issue.description = params[:new_description]
        
         #unsaved_issue_ids << issue.id unless
         i2 = issue.move_to(@target_project, new_tracker, params[:copy_options])
