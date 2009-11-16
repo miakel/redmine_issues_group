@@ -14,7 +14,7 @@ class QueriesController < ApplicationController
     @query = Query.new(params[:query])
     @query.project = params[:query_is_for_all] ? nil : @project
     @query.user = User.current
-    @query.is_public = false unless (@query.project && current_role.allowed_to?(:manage_public_queries)) || User.current.admin?
+	@query.is_public = false unless (@query.project && User.current.allowed_to?(:manage_public_queries, @project)) || User.current.admin?
     @query.column_names = nil if params[:default_columns]
     @query.group_by = params[:group_by] if params[:group_by]
     
