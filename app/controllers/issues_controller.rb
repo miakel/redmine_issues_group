@@ -23,10 +23,14 @@ class IssuesController < ApplicationController
           flash[:error] = l(:notice_failed_to_update)
         else
           @issues.each do |issue|
+            unless params[:preserve_parent_precedence]
+              issue.precedes(issue.parent).destroy if issue.precedes?(issue.parent)
+            end
             if i.nil?
               issue.move_to_root()
             else
               issue.move_to_child_of(i) 
+              issue.precedes(i)
             end
           end
           flash[:notice] = l(:notice_successful_update) unless @issues.empty?

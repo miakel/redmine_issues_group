@@ -6,4 +6,5 @@ label_parent_edit_selected_issues: "Change parent"
 field_parent_issue: "Parent"
 notice_failed_to_update: "Failed to update"
 label_subissues: "Subissues"
-label_add_subissue: Add subissue
+label_add_subissue: "Add subissue"
+field_preserve_parent_precedence: "Preserve 'precedes' for current parent"
