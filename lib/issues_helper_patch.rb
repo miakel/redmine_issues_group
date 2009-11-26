@@ -50,26 +50,26 @@ module IssuesHelperPatch
     end
     def column_header_with_spans(column)
       column.name == :subject ? "<th><span class='has-childs open' onclick='toggle_all();'>&nbsp;&nbsp;&nbsp;&nbsp;</span></th>"+sort_header_tag(column.name.to_s, :caption => column.caption, :default_order => column.default_order, :colspan => 9) :
-        column_header(column)
+      column_header(column)
     end
     def column_plain_content(column_name, issue)
       column = @query.available_columns.find{|c| c.name == column_name}
   		if column.nil?
-  			issue.project.parent ? issue.project.parent.name : issue.project.name if column_name == :main_project
+          issue.project.parent ? issue.project.parent.name : issue.project.name if column_name == :main_project
   		else
   			if column.is_a?(QueryCustomFieldColumn)
-  				cv = issue.custom_values.detect {|v| v.custom_field_id == column.custom_field.id}
-  				show_value(cv)
+              cv = issue.custom_values.detect {|v| v.custom_field_id == column.custom_field.id}
+              show_value(cv)
   			else
   				value = issue.send(column.name.to_s)
   				if value.is_a?(Date)
-  					format_date(value)
+                  format_date(value)
   				elsif value.is_a?(Time)
-  					format_time(value)
+                  format_time(value)
   				elsif column.name == :done_ratio
-            value.to_s.rjust(3) << '%'
+                  value.to_s.rjust(3) << '%'
   				else
-  					value.to_s
+                  value.to_s
   				end
   			end
   		end
