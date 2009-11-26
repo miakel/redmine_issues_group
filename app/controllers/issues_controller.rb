@@ -66,6 +66,7 @@ class IssuesController < ApplicationController
 
         i2 = issue.move_to(@target_project, new_tracker, params[:copy_options])
         i2.move_to_child_of issue
+        i2.precedes(i2.parent)
         i2.save
         issue.reload
       end
