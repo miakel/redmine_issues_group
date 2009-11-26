@@ -60,17 +60,12 @@ class IssuesController < ApplicationController
         issue.init_journal(User.current)
         issue.subject = params[:new_subject]
         issue.description = params[:new_description]
-       
+        issue.assigned_to_id = params[:new_assigned_to_id] if params[:new_assigned_to_id]
+        issue.author = User.current
         #unsaved_issue_ids << issue.id unless
+
         i2 = issue.move_to(@target_project, new_tracker, params[:copy_options])
         i2.move_to_child_of issue
-        
-        #assign some more subissue specifics
-        i2.assigned_to_id = params[:new_assigned_to_id] if params[:new_assigned_to_id]
-        i2.author = User.current
-        i2.created_on = Time.now
-        i2.start_date = Time.now
-        
         i2.save
         issue.reload
       end
