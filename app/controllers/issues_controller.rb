@@ -62,7 +62,7 @@ class IssuesController < ApplicationController
         issue.description = params[:new_description]
         issue.assigned_to_id = params[:new_assigned_to_id] if params[:new_assigned_to_id]
         issue.author = User.current
-        #unsaved_issue_ids << issue.id unless
+        issue.done_ratio = 0
 
         i2 = issue.move_to(@target_project, new_tracker, params[:copy_options])
         i2.move_to_child_of issue
