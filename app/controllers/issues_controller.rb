@@ -57,15 +57,14 @@ class IssuesController < ApplicationController
       new_tracker = params[:new_tracker_id].blank? ? nil : @target_project.trackers.find_by_id(params[:new_tracker_id])
       unsaved_issue_ids = []
       @issues.each do |issue|
-        issue.init_journal(User.current)
-        issue.subject = params[:new_subject]
-        issue.description = params[:new_description]
-        issue.assigned_to_id = params[:new_assigned_to_id] if params[:new_assigned_to_id]
-        issue.author = User.current
-        issue.done_ratio = 0
-
         i2 = issue.move_to(@target_project, new_tracker, params[:copy_options])
         i2.move_to_child_of issue
+        i2.init_journal(User.current)
+        i2.subject = params[:new_subject]
+        i2.description = params[:new_description]
+        i2.assigned_to_id = params[:new_assigned_to_id] if params[:new_assigned_to_id]
+        i2.author = User.current
+        i2.done_ratio = 0
         i2.precedes(i2.parent)
         i2.save
         issue.reload
