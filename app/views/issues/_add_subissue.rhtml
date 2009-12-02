@@ -20,7 +20,7 @@
 			bgiframe: true,
 			autoOpen: false,
 			width: 728,
-			height: 490,
+			height: 550,
 			modal: true,
 			buttons: {
 				'<%= l(:button_add) %>': function() {
@@ -78,6 +78,12 @@
 
 <p><label for="new_subject"><%=l(:field_subject)%>:</label>
 <%= text_field_tag "new_subject", @issue.subject, :size => 50 %></p>
+
+<p><label for="new_status_id"><%=l(:field_status)%>:</label>
+<%= select_tag "new_status_id", options_from_collection_for_select(@allowed_statuses, "id", "name", @issue.status_id) %></p>
+
+<p><label for="new_priority_id"><%=l(:field_priority)%>:</label>
+<%= select_tag "new_priority_id", options_from_collection_for_select(@priorities, "id", "name", @issue.priority_id) %></p>
 
 <p><label for="new_assigned_to_id"><%=l(:field_assigned_to)%>:</label>
 <%= select_tag "new_assigned_to_id", options_from_collection_for_select(@issue.assignable_users, "id", "name", @issue.assigned_to_id) %></p>
