@@ -1,6 +1,8 @@
 require 'redmine'
 require 'query'
 require 'dispatcher'
+require 'issues_helper'
+require 'awesome_nested_set'
 require 'issues_helper_patch'
 require 'awesome_nested_set_issues_patch'
 require 'issue_relation_patch'
