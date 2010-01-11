@@ -55,6 +55,8 @@ class IssuesController < ApplicationController
       p_issue = @issues.first
       new_tracker = params[:new_tracker_id].blank? ? p_issue.tracker : @target_project.trackers.find_by_id(params[:new_tracker_id])
       i2 = Issue.new
+      i2.project = @target_project
+      i2.created_on = Time.now
       i2.subject = params[:new_subject]
       i2.status_id = params[:new_status_id]
       i2.priority_id = params[:new_priority_id]
