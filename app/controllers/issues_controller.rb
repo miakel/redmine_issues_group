@@ -52,29 +52,22 @@ class IssuesController < ApplicationController
     @target_project ||= @project
     @trackers = @target_project.trackers
     if request.post?
-      new_tracker = params[:new_tracker_id].blank? ? nil : @target_project.trackers.find_by_id(params[:new_tracker_id])
-      unsaved_issue_ids = []
-      @issues.each do |issue|
-        i2 = issue.move_to(@target_project, new_tracker, params[:copy_options])
-        i2.move_to_child_of issue
-        i2.init_journal(User.current)
-        i2.subject = params[:new_subject]
-        i2.status_id = params[:new_status_id]
-        i2.priority_id = params[:new_priority_id]
-        i2.assigned_to_id = params[:new_assigned_to_id] if params[:new_assigned_to_id]
-        i2.description = params[:new_description]
-        i2.author = User.current
-        i2.done_ratio = 0
-        i2.blocks(i2.parent)
-        i2.save
-        issue.reload
-      end
-      if unsaved_issue_ids.empty?
-        flash[:notice] = l(:notice_successful_update) unless @issues.empty?
+      p_issue = @issues.first
+      new_tracker = params[:new_tracker_id].blank? ? p_issue.tracker : @target_project.trackers.find_by_id(params[:new_tracker_id])
+      i2 = Issue.new
+      i2.subject = params[:new_subject]
+      i2.status_id = params[:new_status_id]
+      i2.priority_id = params[:new_priority_id]
+      i2.assigned_to_id = params[:new_assigned_to_id] if params[:new_assigned_to_id]
+      i2.description = params[:new_description]
+      i2.author = User.current
+      i2.done_ratio = 0
+      i2.tracker = new_tracker
+      i2.blocks(i2.parent)
+      if i2.save && i2.move_to_child_of(p_issue)
+        flash[:notice] = l(:notice_successful_create)
       else
-        flash[:error] = l(:notice_failed_to_save_issues, :count => unsaved_issue_ids.size,
-                                                         :total => @issues.size,
-                                                         :ids => '#' + unsaved_issue_ids.join(', #'))
+        flash[:error] = l(:notice_failed_to_create_subissue)
       end
       redirect_to :controller => 'issues', :action => 'show', :id => @issues[0].id
       return

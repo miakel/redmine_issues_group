@@ -28,10 +28,14 @@
   <%
     query = Query.new(:name => "_")
     query.project = @project
-    query.column_names = [:id, :subject, :status, :start_date, :due_date]
+    query.column_names = [:id, :subject, :assigned_to, :status, :start_date, :due_date, :done_ratio]
 
-    sort_init(query.sort_criteria.empty? ? [['id', 'desc']] : query.sort_criteria)
-    sort_update({'id' => "#{Issue.table_name}.id"}.merge(query.available_columns.inject({}) {|h, c| h[c.name.to_s] = c.sortable; h}))
+    if (query.respond_to? :sort_criteria)
+      sort_init(query.sort_criteria.empty? ? [['id', 'desc']] : query.sort_criteria)
+      sort_update({'id' => "#{Issue.table_name}.id"}.merge(query.available_columns.inject({}) {|h, c| h[c.name.to_s] = c.sortable; h}))
+    else
+      session[@sort_name] = {:key => 'id', :order => 'asc'}
+    end
   %>
   <%= render :partial => 'issues/list', :locals => {:issues => @issue.children, :query => query, :group_num => 0, :level => 1, :graph => [] } %>
   </div>

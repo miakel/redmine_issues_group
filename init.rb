@@ -1,7 +1,7 @@
 require 'redmine'
 require 'query'
 require 'dispatcher'
-require_dependency 'issues_helper_patch'
+require 'issues_helper_patch'
 require 'awesome_nested_set_issues_patch'
 require 'issue_relation_patch'
 require 'issues_sub_tasks_hook'
@@ -10,7 +10,7 @@ Redmine::Plugin.register :redmine_issues_group do
   name 'Redmine Issues Group plugin'
   author 'Andrew Chaika'
   description 'This is a issue group plugin for Redmine'
-  version '0.1.4'
+  version '0.1.7'
   requires_redmine :version_or_higher => '0.8.0' 
   project_module :issue_tracking do
     permission :edit_parent, {:issues => [:parent_edit, :copy_subissue, :autocomplete_for_parent]}
@@ -27,6 +27,5 @@ end
 Dispatcher.to_prepare do
 	IssuesHelper.send(:include, IssuesHelperPatch)
 	Issue.send(:include, IssueRelationPatch)
-	Issue.send(:include, IssueJournalPatch)
 	CollectiveIdea::Acts::NestedSet::InstanceMethods.send(:include, AwesomeNestedSetIssuesPatch)
 end

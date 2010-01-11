@@ -2,7 +2,6 @@
 <%= link_to l(:label_issue_view_all), { :controller => 'issues', :action => 'index', :project_id => @project, :set_filter => 1 } %><br />
 <% if @project %>
 <%= link_to l(:field_summary), :controller => 'reports', :action => 'issue_report', :id => @project %><br />
-<%= link_to l(:label_change_log), :controller => 'projects', :action => 'changelog', :id => @project %><br />
 <% end %>
 <%= call_hook(:view_issues_sidebar_issues_bottom) %>
 
@@ -24,8 +23,7 @@
 <% end %>
 <% queries.each do |query| -%>
 <% query.project = @project unless @project.nil? %>
-<% issue_count = Issue.count(:include => [:status, :project], :conditions => query.statement) %>
-<%= link_to h(query.name), {:controller => 'issues', :action => 'index', :project_id => @project, :query_id => query}, :class => (query.is_public ? 'icon icon-fav-off' : 'icon icon-fav') %> (<%= issue_count %>)<br />
+<%= link_to h(query.name), {:controller => 'issues', :action => 'index', :project_id => @project, :query_id => query}, :class => (query.is_public ? 'icon icon-fav-off' : 'icon icon-fav') %> (<%= query.issue_count rescue '???' %>)<br />
 <% end -%>
 <% end -%>
 <%= call_hook(:view_issues_sidebar_queries_bottom) %>

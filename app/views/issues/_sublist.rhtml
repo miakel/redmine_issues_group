@@ -16,5 +16,5 @@
           <% end %>
         <% end %>
 	</tr>
-  <%= render :partial => 'issues/sublist', :locals => {:issue_list => issue.children, :query => query, :group_num => group_num, :level => level+1, :graph => g } unless issue.leaf? %>
+  <%= render :partial => 'issues/sublist', :locals => {:issue_list => issue.children, :query => query, :group_num => group_num, :level => level+1, :graph => g } %>
   <% end -%>
