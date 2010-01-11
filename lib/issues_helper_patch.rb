@@ -35,7 +35,8 @@ module IssuesHelperPatch
       (2..level-1).each do |l|
         class_name = 'space'
         class_name = 'outline-3' if (g[l-1] <= 1)
-        content += content_tag 'td', '&nbsp;', :class => class_name
+        class_name = class_name + " has-childs open" unless issue.leaf?
+        content += content_tag 'td', '&nbsp;', :class => class_name, :onclick => issue.leaf? ? "" : "toggle_sub(" + issue.id.to_s + ");"
       end
 
       ind = (issue == issue_list.last)? 2 : (issue == issue_list.first ? 0 : 1)
@@ -49,7 +50,7 @@ module IssuesHelperPatch
       content
     end
     def column_header_with_spans(column)
-      column.name == :subject ? sort_header_tag(column.name.to_s, :caption => column.caption, :default_order => column.default_order, :colspan => 9) :
+      column.name == :subject ? "<th><span class='has-childs open' onclick='toggle_all();'>&nbsp;&nbsp;&nbsp;&nbsp;</span></th>"+sort_header_tag(column.name.to_s, :caption => column.caption, :default_order => column.default_order, :colspan => 9) :
         column_header(column)
     end
     def column_plain_content(column_name, issue)
