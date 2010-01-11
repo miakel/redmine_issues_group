@@ -3,8 +3,6 @@ require_dependency 'issues_controller'
 
 class IssuesController < ApplicationController
   skip_before_filter :authorize, :only => [:autocomplete_for_parent]
-  #before_filter :find_all_issues, :only => [:parent_edit] #:bulk_edit, :move, :destroy, 
-  #before_filter :find_issues, :only => [:copy_subissue]
   prepend_before_filter :find_all_issues, :only => [:parent_edit, :copy_subissue] #:authorize,
   before_filter :authorize, :except => [:index, :changes, :gantt, :calendar, :preview, :update_form, :context_menu]
 
@@ -24,13 +22,13 @@ class IssuesController < ApplicationController
         else
           @issues.each do |issue|
             unless params[:preserve_parent_precedence]
-              issue.precedes(issue.parent).destroy if issue.precedes?(issue.parent)
+              issue.blocks(issue.parent).destroy if issue.blocks?(issue.parent)
             end
             if i.nil?
               issue.move_to_root()
             else
               issue.move_to_child_of(i) 
-              issue.precedes(i)
+              issue.blocks(i)
             end
           end
           flash[:notice] = l(:notice_successful_update) unless @issues.empty?
@@ -67,7 +65,7 @@ class IssuesController < ApplicationController
         i2.description = params[:new_description]
         i2.author = User.current
         i2.done_ratio = 0
-        i2.precedes(i2.parent)
+        i2.blocks(i2.parent)
         i2.save
         issue.reload
       end
